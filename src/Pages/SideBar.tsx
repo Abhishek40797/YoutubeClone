@@ -1,42 +1,23 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import Hero from './Hero';
-
-const Category = [
-    {
-        icon : "assets/home-icon.png",
-        name : "New"
-    },
-    {
-        icon : "assets/shorts-icon.png",
-        name : "Shorts"
-    },
-    {
-        icon : "https://cdn.icon-icons.com/icons2/3237/PNG/512/menu_youtube_social_media_subs_subscription_icon_197393.png",
-        name : "Subscriptions"
-    },
-]
+import { Category } from '../utilis/Category';
 
 const SideBar = () => {
-
-    const [selectedCategory,setSelectedCategoty] = useState<string>("New");
     
     return (
         <>
             <SideBarSection>
                 {
-                    Category.map((catName)=>{
+                    Category.map((catName,i)=>{
                         const {icon,name} = catName;
                         return (
-                            <NavSection onClick={()=>setSelectedCategoty(name)}>
-                                <Img src={icon} alt="" />
+                            <NavSection key={i}>
+                                <I className={`${icon}`}></I>
                                 <p>{name}</p>
                             </NavSection>
                         )
                     })
                 }
             </SideBarSection>
-            <Hero selectedCategory={selectedCategory} />
         </>
     );
 }
@@ -74,7 +55,7 @@ const NavSection = styled.div`
     }
 `
 
-const Img = styled.img`
-    width : 25%;
+const I = styled.i`
+    font-size : 18px;
     padding-left : 40px;
 `

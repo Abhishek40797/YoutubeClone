@@ -1,15 +1,9 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter,Routes} from "react-router-dom";
-import { Header } from './utilis/components'
+import { BrowserRouter,Route,Routes} from "react-router-dom";
+import { Header,Hero } from './utilis/components'
 import { ThemeProvider } from 'styled-components';
-
-const Theme = {
-  responsive : {
-    mobile : "450px",
-    tablet : "768px"
-  }
-}
+import { Theme } from './utilis/Themes';
 
 function App() {
   return (
@@ -18,7 +12,7 @@ function App() {
         <BrowserRouter>
           <Header/>
             <Routes>
-              
+              <Route path='/' element={<Hero />} />
             </Routes>
                     
         </BrowserRouter>
