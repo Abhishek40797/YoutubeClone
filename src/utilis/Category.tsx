@@ -19,4 +19,16 @@ export const Category = [
         icon : "fa-brands fa-react",
         name : "ReactJS"
     },
+    {
+        icon : "fa-brands fa-mix",
+        name : "T-series"
+    },
+    {
+        icon : "fa-solid fa-code",
+        name : "Bhajan music"
+    },
+    {
+        icon : "fa-brands fa-react",
+        name : "Pop music"
+    },
 ]

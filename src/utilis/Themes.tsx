@@ -1,7 +1,8 @@
 
 export const Theme = {
     colors : {
-      textColor : "gray"
+      textColor : "gray",
+      bg : "#eeeeee"
     },
     responsive : {
       mobile : "450px",

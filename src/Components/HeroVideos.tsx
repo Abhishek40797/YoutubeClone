@@ -1,17 +1,20 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface IVideos {
     videoId : string,
-    thumbnail : string,
+    thumbnail : any,
     title : string,
     channalName : string,
 }
 
 const HeroVideos = (props:IVideos) => {
     const {videoId,thumbnail,title,channalName} = props
+    const navigate  = useNavigate()
+    
     return (
         <>
-            <View>
+            <View onClick={()=>navigate(`/watch/${videoId}`)}>
                 <Img src={thumbnail} alt='' />
                 <H3>{title}</H3>
                 <P>{channalName}</P>

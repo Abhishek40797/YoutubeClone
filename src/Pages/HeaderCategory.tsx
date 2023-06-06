@@ -1,16 +1,13 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { Category } from '../utilis/Category';
-import HeroSection from '../Components/HeroSection';
-import SideBar from './SideBar';
+import styled from "styled-components"
+import { Category } from "../utilis/Category";
+import { useState } from "react";
+import Hero from "./Hero";
 
-const Hero = () => {
-
+export const HeaderCategory = ()=>{    
     const [selectedCategory,setSelectedCategroy] = useState<string>("All")
 
     return (
-        <>            
-            <SideBar />        
+        <>
             <CategorySection>
             {
                 Category.map((catName,i)=>{
@@ -21,12 +18,10 @@ const Hero = () => {
                 })
             }
             </CategorySection>
-            <HeroSection categoryName={selectedCategory} />            
         </>
     )
 }
 
-export default Hero;
 
 const CategorySection = styled.div`
     margin-left : 20%;

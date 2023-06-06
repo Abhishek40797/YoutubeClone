@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom"
 import styled from "styled-components"
 import { SearchHeader } from "../Components/HeaderSearch"
 import { HeaderIcon } from "../Components/HeaderButton"
-import SideBar from "./SideBar"
 
 const Header = ()=>{
     return (
@@ -21,8 +20,6 @@ const Header = ()=>{
                     <HeaderIcon icon="fa-solid fa-bell" />
                 </NotificationSection>
             </HeaderContainer>
-
-            <SideBar />
         </>
     )
 }
@@ -38,7 +35,9 @@ const HeaderContainer = styled.header`
     padding : 10px 40px;
     display : flex;
     align-items : center;
+    flex-wrap : wrap;
     justify-content : space-between;
+    background-color : #FFF;
     @media (max-width:${({theme})=>theme.responsive.mobile}) {
         padding-inline : 10px;
     }

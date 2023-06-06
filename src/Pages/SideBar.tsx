@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { Category } from '../utilis/Category';
 
-const SideBar = () => {
-    
+const SideBar = () => {    
     return (
         <>
             <SideBarSection>
@@ -34,10 +33,6 @@ const SideBarSection = styled.div`
     gap : 10px;
     overflow-y : auto;
     border-right : 1px solid #eeeeee;
-    .menu-link {
-        text-decoration : none;
-        color : #000;
-    }
 `
 
 const NavSection = styled.div`

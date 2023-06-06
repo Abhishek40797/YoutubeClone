@@ -1,11 +1,27 @@
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 
 export const SearchHeader = ()=> {
+    const navigate = useNavigate()
+    const [searchItem,setSearchItem] = useState<string>("");
+
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+        setSearchItem(e.target.value)
+    }
+
+    const handleSubmit = ()=>{
+        if(searchItem?.length > 0) {
+            navigate(`/search/${searchItem}`)
+        }
+        setSearchItem("")
+    }
+
     return (
         <>
             <SearchSection>
-                <Input placeholder="Search" /> 
-                <I className="fa-solid fa-magnifying-glass"></I>
+                <Input placeholder="Search" value={searchItem} onChange={(e)=>handleChange(e)} /> 
+                <I className="fa-solid fa-magnifying-glass" onClick={handleSubmit}></I>
             </SearchSection>
         </>
     )
