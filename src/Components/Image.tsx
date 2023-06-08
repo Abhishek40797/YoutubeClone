@@ -3,14 +3,15 @@ import styled from 'styled-components';
 
 interface IProps {
     width : string,
-    height : string
+    height : string,
+    src : string
 }
 
-const Image = ({width,height}:IProps) => {
+const Image = ({width,height,src}:IProps) => {
     return (
         <>
             <Img 
-                src='https://i.ytimg.com/vi/IR-yX-DY4L8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBcHUkdBJHn_BglFHR20e1DU3nrsg' 
+                src={src}
                 width={width} 
                 height={height}
                 alt=''

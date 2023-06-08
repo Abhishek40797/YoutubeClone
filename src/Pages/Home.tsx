@@ -2,9 +2,9 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Category } from '../utilis/Category';
 import HeroSection from '../Components/HeroSection';
-import SideBar from './SideBar';
+import SideBar from '../Components/SideBar';
 
-const Hero = () => {
+const Home = () => {
 
     const [selectedCategory,setSelectedCategroy] = useState<string>("All")
 
@@ -26,7 +26,7 @@ const Hero = () => {
     )
 }
 
-export default Hero;
+export default Home;
 
 const CategorySection = styled.div`
     margin-left : 20%;

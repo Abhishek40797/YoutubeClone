@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
-import { SearchHeader } from "../Components/HeaderSearch"
-import { HeaderIcon } from "../Components/HeaderButton"
+import { SearchHeader } from "./HeaderSearch"
+import { HeaderIcon } from "./HeaderButton"
 
 const Header = ()=>{
     return (

@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ICategroy, IHeroVideos } from '../Interfaces';
+import { ICategroy, IVideosProps } from '../Interfaces';
 import { fetchVideo } from '../APIs/fetchFromAPI';
-import HeroVideos from './HeroVideos';
+import HomeVideos  from './HeroVideos';
 
 const HeroSection = ({categoryName}:ICategroy) => { 
-    const [videos,setVideos] = useState<IHeroVideos[]>([]);
-    const [page,setPage] = useState(1)
+    const [videos,setVideos] = useState<IVideosProps[]>([]);
+    // const [page,setPage] = useState(1)
 
     useEffect(()=>{
         const getVideos = async ()=>{
             try {
-                const res = await fetchVideo(categoryName)
+                const res = await fetchVideo(categoryName,"",1,"")
                 setVideos(res)
             }
             catch(error) {
@@ -40,7 +40,7 @@ const HeroSection = ({categoryName}:ICategroy) => {
                         videos.map((video,i)=>{
                             const {id,snippet} = video;
                             return (
-                                <HeroVideos
+                                <HomeVideos 
                                    key={i}
                                    videoId={id.videoId}
                                    thumbnail={snippet.thumbnails.medium.url}   

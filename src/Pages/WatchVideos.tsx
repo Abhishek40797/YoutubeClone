@@ -1,47 +1,43 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components"
+import styled from "styled-components";
 import { fetchWatchVideo } from "../APIs/fetchFromAPI";
+import RelatedVideos from "../Components/RelatedVideos";
 import { IWatchProps } from "../Interfaces";
-import RelatedVideos from "./RelatedVideos";
+import UserComments from "../Components/Comments";
 
 const WatchVideos = ()=> {
     const {videoId} = useParams()
     const [video,setVideo] = useState<IWatchProps[]>([])
-    const [details,setDetails] = useState({
-        id : "",
-        snippet : {
-            title : "",
-        }
-    })
     const [videolink,setVideolink] = useState("")
 
-    useEffect(()=>{
-        const getVideoDetails = async ()=>{
-            try {
-                const res = await fetchWatchVideo("videos",videoId as string)
-                setVideo(res)
-                setDetails({
-                    id : video[0].id,
-                    snippet : {
-                        title : video[0].snippet.title
-                    }
-                })
-                setVideolink(`https://www.youtube.com/embed/${details.id}`)
-            }
-            catch(err) {
-                console.log(err)
-            }
+    const getVideoDetails = useCallback(async()=>{
+        try {
+            const res = await fetchWatchVideo("videos",videoId)
+            setVideo(res);
         }
+        catch(err) {
+            console.log(err)
+        }
+    },[videoId])
+
+    useEffect(()=>{
+        if(video.length) {
+            setVideolink(`https://www.youtube.com/embed/${video[0].id}`)
+        }   
+    },[video])
+
+    useEffect(()=>{
         getVideoDetails()
-    })
+    },[getVideoDetails])
 
     return (
         <>
             <Container>
                 <WatchSection>
                     <IFrame src={videolink} title="YouTube video player"></IFrame>
-                    <Title>{details.snippet.title}</Title>
+                    <Title>{video.length? video[0].snippet.title : ""}</Title>
+                    <UserComments/>                    
                 </WatchSection>
                 
                 <RelatedVideos />

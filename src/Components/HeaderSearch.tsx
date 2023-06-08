@@ -14,7 +14,6 @@ export const SearchHeader = ()=> {
         if(searchItem?.length > 0) {
             navigate(`/search/${searchItem}`)
         }
-        setSearchItem("")
     }
 
     return (

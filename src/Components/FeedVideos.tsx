@@ -17,12 +17,12 @@ const FeedVideos = (props:IVideos) => {
 
     return (
         <>
-            <SearchView onClick={()=>navigate(`/watch/${videoId}`)}>
-                <Img src={thumbnail} alt='' />
+            <SearchView>
+                <Img src={thumbnail} alt='' onClick={()=>navigate(`/watch/${videoId}`)} />
                 <VideoContent>
-                    <H3>{title}</H3>
+                    <H3 onClick={()=>navigate(`/watch/${videoId}`)}>{title}</H3>
                     <P>76K views . <span>{published}</span></P>
-                    <H5>Channel Name : {channalName}</H5>
+                    <H5 onClick={()=>navigate(`/channel/${channelid}`)}>Channel Name : {channalName}</H5>
                 </VideoContent>
             </SearchView>
         </>

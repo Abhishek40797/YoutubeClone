@@ -8,7 +8,7 @@ interface IVideos {
     channalName : string,
 }
 
-const HeroVideos = (props:IVideos) => {
+const HomeVideos = (props:IVideos) => {
     const {videoId,thumbnail,title,channalName} = props
     const navigate  = useNavigate()
     
@@ -23,7 +23,7 @@ const HeroVideos = (props:IVideos) => {
     );
 }
 
-export default HeroVideos;
+export default HomeVideos ;
 
 
 const View = styled.div`
