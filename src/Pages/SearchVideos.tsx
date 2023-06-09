@@ -37,36 +37,7 @@ const SearchVideos = () => {
     },[getVideos])
 
     const handleFilter = (filtertype:string)=>{
-        // switch(filtertype) {
-        //     case "Over 20 minutes" : {
-        //         setVideoDimension("medium")
-        //         console.log(videoDimension)
-        //         break
-        //     }
-        //     case "4-20 minutes" : {
-        //         setVideoDimension("short")
-        //         console.log(videoDimension)
-        //         break
-        //     }
-        //     case "Under 4 minutes" : {
-        //         setVideoDimension("long")
-        //         console.log(videoDimension)
-        //         break
-        //     }
-        //     default : {
-        //         setVideoDimension("")
-        //     }
-        // }
-        // if(filtertype==="Over 20 minutes") {
-        //     setVideoDimension("long")
-        //     console.log(videoDimension)
-        // }
-        // else if(filtertype==="4-20 minutes") {
-        //     setVideoDimension("medium")
-        //     console.log(videoDimension)
-        // }
         setType(filtertype)
-        // console.log(filtertype)
         setFilterVisibility(false)
     }
 
@@ -94,28 +65,28 @@ const SearchVideos = () => {
                     videos.map((video,i)=>{
                         const {id,snippet} = video;
                         return (
-                            type === "Channel" ? 
-                                <ChannelProfile 
-                                    key={i}
-                                    width='100px' 
-                                    height='100px'
-                                    url = {snippet.thumbnails.default.url}
-                                    channeltitle = {snippet.channelTitle}
-                                    channelId = {snippet.channelId}
-                                />
+                            // type === "Channel" ? 
+                            //     <ChannelProfile 
+                            //         key={i}
+                            //         width='100px' 
+                            //         height='100px'
+                            //         url = {snippet.thumbnails.default.url}
+                            //         channeltitle = {snippet.channelTitle}
+                            //         channelId = {snippet.channelId}
+                            //     />
                                 
-                                :
+                            //     :
 
-                                type === "Playlist" ?
-                                    <Playlists 
-                                        key={i}
-                                        playlistId ={id.playlistId}
-                                        url ={snippet.thumbnails.medium.url}
-                                        title={snippet.title}
-                                        channaltitle = {snippet.channelTitle}
-                                        channelId = {snippet.channelId}
-                                        description = {snippet.description}
-                                    /> :
+                            //     type === "Playlist" ?
+                            //         <Playlists 
+                            //             key={i}
+                            //             playlistId ={id.playlistId}
+                            //             url ={snippet.thumbnails.medium.url}
+                            //             title={snippet.title}
+                            //             channaltitle = {snippet.channelTitle}
+                            //             channelId = {snippet.channelId}
+                            //             description = {snippet.description}
+                            //         /> :
                                     <FeedVideos 
                                         key={i}
                                         videoId={id.videoId}

@@ -16,7 +16,7 @@ export const fetchVideo =  async(category:string,type:string,channelId:string,or
             type : type,
             key : API_KEY,
             channelId : channelId,
-            order : "date",
+            order : ordertype,
             // eventType : "live",
             maxResults : 9
         }
