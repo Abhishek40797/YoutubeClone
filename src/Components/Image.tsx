@@ -25,8 +25,8 @@ export default Image;
 
 
 const Img = styled.img<{width:string,height:string}>`
-    width : 45%;
-    height : 110px;
+    width : ${({width})=>width};
+    height : ${({height})=>height};
     object-fit : cover;
     border-radius : 10px;
     cursor : pointer;

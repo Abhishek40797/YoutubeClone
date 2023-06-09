@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ICategroy, IVideosProps } from '../Interfaces';
 import { fetchVideo } from '../APIs/fetchFromAPI';
 import SmallCardSkeletonComponent from './SkeltonComponents/SmallCardSkeltonComponent';
+// import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HeroSection = ({categoryName}:ICategroy) => { 
     const [videos,setVideos] = useState<IVideosProps[]>([]);
@@ -10,8 +11,9 @@ const HeroSection = ({categoryName}:ICategroy) => {
     const [isloading,setLoading] = useState(true)
 
     const getVideos = useCallback(async ()=>{
+        // let pageToken = "1";
         try {
-            const res = await fetchVideo(categoryName,"",1,"","")
+            const res = await fetchVideo(categoryName,"","","date")
             setVideos(res)
         }
         catch(error) {
@@ -41,10 +43,20 @@ const HeroSection = ({categoryName}:ICategroy) => {
         <>
             <Container>
                 <VideoContainer>
+
+                    {/* <InfiniteScroll
+                        dataLength={}
+                        next={this.fetchMoreData}
+                        hasMore={true}
+                        loader={<h4>Loading...</h4>}
+                        scrollableTarget="scrollableDiv"
+                    >  
+                                          
+                    </InfiniteScroll> */}
                     <SmallCardSkeletonComponent
-                        isLoading = {isloading}
-                        videos={videos}
-                    />
+                            isLoading = {isloading}
+                            videos={videos}
+                        />  
                 </VideoContainer>
             </Container>
         </>

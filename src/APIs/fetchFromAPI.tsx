@@ -1,6 +1,6 @@
 import axios from "axios";
-//AIzaSyCLTDWXJ_BBHV1efoRGoCs8D8tuv7xUAs0
-const API_KEY = "AIzaSyCLTDWXJ_BBHV1efoRGoCs8D8tuv7xUAs0";
+
+const API_KEY = "AIzaSyDzggVpTJeDhyk42u3YQJQGHByl6OPntwk";
 const BASE_URL = "https://www.googleapis.com/youtube/v3"
 
 enum Parts {
@@ -8,16 +8,16 @@ enum Parts {
     id = "id"
 }
 
-export const fetchVideo =  async(category:string,type:string,page:number,channelId:string,ordertype:string)=>{
+export const fetchVideo =  async(category:string,type:string,channelId:string,ordertype:string)=>{
     const { data } = await axios.get(`${BASE_URL}/search`,{
         params : {
             part : Parts.snippet,
             q : category,
             type : type,
             key : API_KEY,
-            page : page,
             channelId : channelId,
             order : "date",
+            // eventType : "live",
             maxResults : 9
         }
     })
@@ -39,8 +39,8 @@ export const fetchWatchVideo = async(url:string,videoId:any)=>{
     return res.data.items
 }
 
-export const fetchComments = async (url:string,videoId:any)=>{
-    const res = await axios.get(`${BASE_URL}/${url}`,{
+export const fetchComments = async (videoId:string)=>{
+    const res = await axios.get(`${BASE_URL}/commentThreads`,{
         params : {
             part : Parts.snippet,
             videoId : videoId,

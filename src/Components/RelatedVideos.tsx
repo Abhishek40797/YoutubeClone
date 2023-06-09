@@ -33,7 +33,7 @@ const RelatedVideos = () => {
                         const {id,snippet} = video
                         return (
                             <SearchView key={i} onClick={()=>navigate(`/watch/${id.videoId}`)}>
-                                <Image width="45%" height="110px" src={snippet.thumbnails.high.url} />
+                                <Image width="30%" height="110px" src={snippet.thumbnails.high.url} />
                                 <VideoContent>
                                     <H3>{snippet.title}</H3>
                                     <H5>{snippet.channelTitle}</H5>

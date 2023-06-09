@@ -3,7 +3,7 @@ import styled from "styled-components"
 export const Channels = ()=>{
     return (
         <>
-            <P>This channel has no Channels.</P>
+            <P>This channel doesn't feature any other channels.</P>
         </>
     )
 }

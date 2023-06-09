@@ -10,34 +10,35 @@ export const ChannelVideos = ()=>{
     const {channelId} = useParams()
     const [videos,setVideos] = useState<IVideosProps[]>([]);
     const [isloading,setLoading] = useState(true)
-    const [order,setOrder] = useState<string>("")
+    const [order,setOrder] = useState<string>("date")
 
     const getVideos = useCallback( async ()=>{
         try {
-            const res = await fetchVideo("","video",1,channelId as string,"viewCount")
+            const res = await fetchVideo("","video",channelId as string,order)
             setVideos(res)
         }
         catch(error) {
             console.log(error)
         }
-    },[channelId])
+    },[channelId,order])
 
     useEffect(()=>{
         setTimeout(()=>{
             getVideos()
             setLoading(false)
-        },2000)
+        },1000)
     },[getVideos])
 
-    // const handleOrder = (orderType:string)=>{
-    //     setOrder(orderType)
-    // }
+    const handleOrder = (orderType:any)=>{
+        setOrder(orderType)
+        // setLoading(true)
+    }
 
     return (
         <>
             <SortVideoContainer>
-                <Button onClick={()=>setOrder("date")}>Latest</Button>
-                <Button onClick={()=>setOrder("viewCount")}>Popular</Button>
+                <Button onClick={()=>handleOrder("date")}>Latest</Button>
+                <Button onClick={()=>handleOrder("viewCount")}>Popular</Button>
             </SortVideoContainer>
             
             <VideoContainer>

@@ -11,7 +11,7 @@ const UserComments = () => {
     
     const getComments = useCallback( async ()=>{
         try {
-            const res = await fetchComments("commentThreads",videoId as string)
+            const res = await fetchComments(videoId as string)
             setComments(res)
         }
         catch(err) {

@@ -14,7 +14,7 @@ const ChannelDetails = () => {
 
     const getVideos = useCallback( async ()=>{
         try {
-            const res = await fetchVideo("","",1,channelId as string,"")
+            const res = await fetchVideo("","",channelId as string,"")
             setChannelData(res)
         }
         catch(error) {

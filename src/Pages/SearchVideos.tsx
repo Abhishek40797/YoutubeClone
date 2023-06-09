@@ -11,8 +11,8 @@ import { Type } from '../utilis/Filters/Type';
 import { Duration } from '../utilis/Filters/Duration';
 import { Features } from '../utilis/Filters/Features';
 import { SortBy } from '../utilis/Filters/SortBy';
-import ChannelComponent from '../Components/ChannelComponent';
 import ChannelProfile from '../Components/ChannelComponent';
+import Playlists from '../Components/Playlists';
 const SearchVideos = () => {
 
     const {categoryName} = useParams()
@@ -20,33 +20,21 @@ const SearchVideos = () => {
     const [videos,setVideos] = useState<IVideosProps[]>([]);
     const [filterVisibility,setFilterVisibility] = useState<boolean>(false)
     const [type,setType] = useState<string>("")
-    const [page,setPage] = useState(1)
     const [videoDimension,setVideoDimension] = useState<string>("")
 
     const getVideos = useCallback( async ()=>{
         try {
-            const res = await fetchVideo(categoryName as string,type,page,"","")
-            setVideos(prev=>[...prev,...res])
+            const res = await fetchVideo(categoryName as string,type,"","date")
+            setVideos(res)
         }
         catch(error) {
             console.log(error)
         }
-    },[categoryName,type,page])
+    },[categoryName,type])
 
     useEffect(()=>{
         getVideos()
     },[getVideos])
-
-    const handleScrolling = ()=>{
-        if(window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
-            setPage((prev)=> prev + 1)
-        }
-    }
-
-    useEffect(()=>{
-        window.addEventListener("scroll",handleScrolling)
-        return ()=> window.removeEventListener("scroll",handleScrolling)
-    },[])
 
     const handleFilter = (filtertype:string)=>{
         // switch(filtertype) {
@@ -78,7 +66,7 @@ const SearchVideos = () => {
         //     console.log(videoDimension)
         // }
         setType(filtertype)
-        // console.log(type)
+        // console.log(filtertype)
         setFilterVisibility(false)
     }
 
@@ -95,8 +83,8 @@ const SearchVideos = () => {
                             <Filters filters={UploadDate} handleFilter={handleFilter}/>
                             <Filters filters={Type} handleFilter={handleFilter} />
                             <Filters filters={Duration} handleFilter={handleFilter} />
-                            {/* <Filters filters={Features} />
-                            <Filters filters={SortBy} /> */}
+                            <Filters filters={Features} handleFilter={handleFilter} />
+                            <Filters filters={SortBy} handleFilter={handleFilter} />
                         </FilterSubContainer>
                     </Visibility>
                     
@@ -118,15 +106,25 @@ const SearchVideos = () => {
                                 
                                 :
 
-                                <FeedVideos 
-                                    key={i}
-                                    videoId={id.videoId}
-                                    thumbnail = {snippet.thumbnails.medium.url}
-                                    title={snippet.title}  
-                                    channalName={snippet.channelTitle}
-                                    published={snippet.publishedAt}
-                                    channelid={snippet.channelId}  
-                                />
+                                type === "Playlist" ?
+                                    <Playlists 
+                                        key={i}
+                                        playlistId ={id.playlistId}
+                                        url ={snippet.thumbnails.medium.url}
+                                        title={snippet.title}
+                                        channaltitle = {snippet.channelTitle}
+                                        channelId = {snippet.channelId}
+                                        description = {snippet.description}
+                                    /> :
+                                    <FeedVideos 
+                                        key={i}
+                                        videoId={id.videoId}
+                                        thumbnail = {snippet.thumbnails.medium.url}
+                                        title={snippet.title}  
+                                        channalName={snippet.channelTitle}
+                                        published={snippet.publishedAt}
+                                        channelid={snippet.channelId}  
+                                    />
                         )                 
                 })
             }
