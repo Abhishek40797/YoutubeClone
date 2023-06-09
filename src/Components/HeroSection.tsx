@@ -1,25 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ICategroy, IVideosProps } from '../Interfaces';
 import { fetchVideo } from '../APIs/fetchFromAPI';
-import HomeVideos  from './HeroVideos';
+import SmallCardSkeletonComponent from './SkeltonComponents/SmallCardSkeltonComponent';
 
 const HeroSection = ({categoryName}:ICategroy) => { 
     const [videos,setVideos] = useState<IVideosProps[]>([]);
     // const [page,setPage] = useState(1)
+    const [isloading,setLoading] = useState(true)
 
-    useEffect(()=>{
-        const getVideos = async ()=>{
-            try {
-                const res = await fetchVideo(categoryName,"",1,"")
-                setVideos(res)
-            }
-            catch(error) {
-                console.log(error)
-            }
+    const getVideos = useCallback(async ()=>{
+        try {
+            const res = await fetchVideo(categoryName,"",1,"","")
+            setVideos(res)
         }
-        getVideos()
+        catch(error) {
+            console.log(error)
+        }
     },[categoryName])
+
+    useEffect(()=>{        
+       setTimeout(()=>{
+        getVideos()
+        setLoading(false)
+       },2000)
+    },[getVideos])
 
     // const handleScrolling = ()=>{
     //     if(window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
@@ -36,20 +41,10 @@ const HeroSection = ({categoryName}:ICategroy) => {
         <>
             <Container>
                 <VideoContainer>
-                    {
-                        videos.map((video,i)=>{
-                            const {id,snippet} = video;
-                            return (
-                                <HomeVideos 
-                                   key={i}
-                                   videoId={id.videoId}
-                                   thumbnail={snippet.thumbnails.medium.url}   
-                                   title={snippet.title}  
-                                   channalName={snippet.channelTitle}                               
-                                />
-                            )
-                        })
-                    }
+                    <SmallCardSkeletonComponent
+                        isLoading = {isloading}
+                        videos={videos}
+                    />
                 </VideoContainer>
             </Container>
         </>

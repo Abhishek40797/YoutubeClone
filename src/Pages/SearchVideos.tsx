@@ -25,7 +25,7 @@ const SearchVideos = () => {
 
     const getVideos = useCallback( async ()=>{
         try {
-            const res = await fetchVideo(categoryName as string,type,page,"")
+            const res = await fetchVideo(categoryName as string,type,page,"","")
             setVideos(prev=>[...prev,...res])
         }
         catch(error) {
@@ -49,24 +49,36 @@ const SearchVideos = () => {
     },[])
 
     const handleFilter = (filtertype:string)=>{
-        switch(filtertype) {
-            case "Over 20 minutes" : {
-                setVideoDimension("long")
-                break
-            }
-            case "4-20 minutes" : {
-                setVideoDimension("medium")
-                break
-            }
-            case "Under 4 minutes" : {
-                setVideoDimension("short")
-                break
-            }
-            default : {
-                setVideoDimension("")
-            }
-        }
-        console.log(videoDimension)
+        // switch(filtertype) {
+        //     case "Over 20 minutes" : {
+        //         setVideoDimension("medium")
+        //         console.log(videoDimension)
+        //         break
+        //     }
+        //     case "4-20 minutes" : {
+        //         setVideoDimension("short")
+        //         console.log(videoDimension)
+        //         break
+        //     }
+        //     case "Under 4 minutes" : {
+        //         setVideoDimension("long")
+        //         console.log(videoDimension)
+        //         break
+        //     }
+        //     default : {
+        //         setVideoDimension("")
+        //     }
+        // }
+        // if(filtertype==="Over 20 minutes") {
+        //     setVideoDimension("long")
+        //     console.log(videoDimension)
+        // }
+        // else if(filtertype==="4-20 minutes") {
+        //     setVideoDimension("medium")
+        //     console.log(videoDimension)
+        // }
+        setType(filtertype)
+        // console.log(type)
         setFilterVisibility(false)
     }
 

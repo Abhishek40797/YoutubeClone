@@ -18,6 +18,11 @@ const HomeVideos = (props:IVideos) => {
                 <Img src={thumbnail} alt='' />
                 <H3>{title}</H3>
                 <P>{channalName}</P>
+                <ViewCount>
+                    <P>{Math.floor(Math.random()*1000)}M views</P>
+                    <I className="fa-solid fa-circle"></I>
+                    <P>5 days ago</P>
+                </ViewCount>
             </View>
         </>
     );
@@ -49,5 +54,15 @@ const H3 = styled.h3`
 `
 const P = styled.p`
     font-size : 13px;
+    color : gray;
+`
+const ViewCount = styled.div`
+    display : flex;
+    align-items : center;
+    gap : 10px;
+`
+
+const I = styled.i`
+    font-size : 5px;
     color : gray;
 `

@@ -18,7 +18,7 @@ const ChannelProfile = ({width,height,url,channeltitle,channelId}:IChannel)=>{
                     <Img src={url} width={width} alt='' height={height} />
                     <div>
                         <H3>{channeltitle}</H3>
-                        <P>@mankirtaulakh4128•29 subscribers</P>
+                        <P>@{channeltitle} • {Math.floor(Math.random()*50)}M subscibers</P>
                     </div>
                 </ChannelDetail>
                 <Subscribe>Subscribe</Subscribe>
