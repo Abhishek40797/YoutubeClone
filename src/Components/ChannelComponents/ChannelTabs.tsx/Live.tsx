@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components"
-import { IVideosProps } from "../../Interfaces";
+import { IVideosProps } from "../../../Interfaces";
 import { useCallback, useEffect, useState } from "react";
-import { fetchVideo } from "../../APIs/fetchFromAPI";
-import SmallCardSkeletonComponent from "../SkeltonComponents/SmallCardSkeltonComponent";
+import { fetchVideo } from "../../../APIs/fetchFromAPI";
+import SmallCardSkeletonComponent from "../../SkeltonComponents/SmallCardSkeltonComponent";
 
 export const ChannelLive = ()=>{
 
@@ -13,7 +13,7 @@ export const ChannelLive = ()=>{
 
     const getVideos = useCallback( async ()=>{
         try {
-            const res = await fetchVideo("","video",channelId as string,"")
+            const res = await fetchVideo("","video",channelId as string,"",0,"live")
             setVideos(res)
         }
         catch(error) {

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,29 +12,29 @@ interface IVideos {
     channelid : string
 }
 
-const FeedVideos = (props:IVideos) => {
+const SearchVideoCards = (props:IVideos) => {
     const {videoId,thumbnail,title,channalName,published,channelid} = props
     const navigate  = useNavigate()
 
     return (
         <>
-            <SearchView>
+            <SearchVideoCard>
                 <Img src={thumbnail} alt='' onClick={()=>navigate(`/watch/${videoId}`)} />
                 <VideoContent>
                     <H3 onClick={()=>navigate(`/watch/${videoId}`)}>{title}</H3>
-                    <P>76K views . <span>{published}</span></P>
+                    <P>76K views . <span>{moment(published).fromNow()}</span></P>
                     <H5 onClick={()=>navigate(`/channel/${channelid}`)}>Channel Name : {channalName}</H5>
                 </VideoContent>
-            </SearchView>
+            </SearchVideoCard>
         </>
     );
 }
 
-export default FeedVideos;
+export default SearchVideoCards;
 
 
 
-const SearchView = styled.div`
+const SearchVideoCard = styled.div`
     width : 100%;
     margin-block : 20px;
     display : flex;

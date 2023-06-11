@@ -1,11 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IVideosProps } from '../Interfaces';
-import { fetchWatchVideo } from '../APIs/fetchFromAPI';
+import { fetchWatchContainerData } from '../APIs/fetchFromAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Image } from '../utilis/components'
+import moment from 'moment';
 
-const RelatedVideos = () => {
+interface IProps {
+    resultShow : number
+}
+
+const RelatedVideos = ({resultShow}:IProps) => {
 
     const {videoId} = useParams()
     const navigate = useNavigate()
@@ -13,17 +18,22 @@ const RelatedVideos = () => {
 
     const getVideoDetails = useCallback( async ()=>{
         try {
-            const res = await fetchWatchVideo(`search`,videoId as string)
+            const res = await fetchWatchContainerData(`search`,videoId as string,resultShow)
             setVideos(res)
         }
         catch(err) {
             console.log(err)
         }
-    },[videoId])
+    },[videoId,resultShow])
 
     useEffect(()=>{
         getVideoDetails()
     },[getVideoDetails])
+
+    const handlePlayVideo = (id:any)=>{
+        navigate(`/watch/${id.videoId}`)
+        window.scrollTo(0,0)
+    }
 
     return (
         <>
@@ -32,14 +42,14 @@ const RelatedVideos = () => {
                     videos.map((video,i)=>{
                         const {id,snippet} = video
                         return (
-                            <SearchView key={i} onClick={()=>navigate(`/watch/${id.videoId}`)}>
+                            <RelatedVideoCard key={i}>
                                 <Image width="30%" height="110px" src={snippet.thumbnails.high.url} />
                                 <VideoContent>
-                                    <H3>{snippet.title}</H3>
-                                    <H5>{snippet.channelTitle}</H5>
-                                    <P>76K views . <span>{snippet.publishedAt}</span></P>
+                                    <H3 onClick={()=>handlePlayVideo(id)}>{snippet.title}</H3>
+                                    <H5 onClick={()=>navigate(`/channel/${snippet.channelId}`)}>{snippet.channelTitle}</H5>
+                                    <P>76K views . <span>{moment(snippet.publishedAt).fromNow()}</span></P>
                                 </VideoContent>
-                            </SearchView>
+                            </RelatedVideoCard>
                         )
                     })
                 }
@@ -57,7 +67,7 @@ const Container = styled.div`
     gap : 20px;
 `
 
-const SearchView = styled.div`
+const RelatedVideoCard = styled.div`
     display : flex;
 `
 

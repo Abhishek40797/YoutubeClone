@@ -4,14 +4,15 @@ import { BrowserRouter,Route,Routes} from "react-router-dom";
 import { Header, Home, SearchVideos, WatchVideos} from './utilis/components'
 import { ThemeProvider } from 'styled-components';
 import { Theme } from './utilis/Themes';
-import ChannelDetails from './Pages/Channel';
-import { ChannelHome } from './Components/ChannelTabs.tsx/Home';
-import { ChannelVideos } from './Components/ChannelTabs.tsx/Videos';
-import { ChannelPlaylist } from './Components/ChannelTabs.tsx/Playlists';
-import { ChannelCommuntiy } from './Components/ChannelTabs.tsx/Communtiy';
-import { ChannelAbout } from './Components/ChannelTabs.tsx/About';
-import { Channels } from './Components/ChannelTabs.tsx/Channels';
-import { ChannelLive } from './Components/ChannelTabs.tsx/Live';
+import ChannelDetails from './Pages/ChannelDetails';
+import { ChannelHome } from './Components/ChannelComponents/ChannelTabs.tsx/Home';
+import { ChannelVideos } from './Components/ChannelComponents/ChannelTabs.tsx/Videos';
+import { ChannelPlaylist } from './Components/ChannelComponents/ChannelTabs.tsx/Playlists';
+import { ChannelCommuntiy } from './Components/ChannelComponents/ChannelTabs.tsx/Communtiy';
+import { ChannelAbout } from './Components/ChannelComponents/ChannelTabs.tsx/About';
+import { Channels } from './Components/ChannelComponents/ChannelTabs.tsx/Channels';
+import { ChannelLive } from './Components/ChannelComponents/ChannelTabs.tsx/Live';
+import Playlists from './Pages/Playlists';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path='/' element={<Home/>} />
               <Route path='/search/:categoryName' element={<SearchVideos />} />
               <Route path='/watch/:videoId' element={<WatchVideos/>} />
+              <Route path='/playlist/:list' element={<Playlists/>} />
               <Route path='/channel/:channelId' element={<ChannelDetails/>}>
                   <Route index element={<ChannelHome/>} />
                   <Route path='featured' element={<ChannelHome/>} />

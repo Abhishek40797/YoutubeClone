@@ -11,13 +11,13 @@ interface IProps {
     description : string
 }
 
-export const Playlists = (props : IProps) => {
+export const PlaylistComponent = (props : IProps) => {
     const {playlistId,url,title,channaltitle,channelId,description} = props;
     const navigate = useNavigate()
     return (
         <>
             <SearchView>
-                <ImageContainer>
+                <ImageContainer onClick={()=>navigate(`/playlist/${playlistId}`)}>
                     <Img src={url} alt='' />
                     <ImgFooter>
                         <P><i className="fa-solid fa-play"></i></P>
@@ -28,14 +28,14 @@ export const Playlists = (props : IProps) => {
                     <H3>{title}</H3>
                     <H5 onClick={()=>navigate(`/channel/${channelId}`)}>{channaltitle}</H5>
                     <P>{description.length?description:"Paapi Munda - Mankirt Aulakh Ft. Gur Sidhu | Kaptaan | Sukh Sanghera | New Punjabi Song 2020 4:00 Ek Din - BOHEMIA | Karan Aujla | J.Hind | The GAME | Shaxe Oriah | Sumeet S | New Punjabi Song 2021 4:55"}</P>
-                    <H4>VIEW FULL PLAYLIST</H4>
+                    <H4 onClick={()=>navigate(`/playlist/${playlistId}`)}>VIEW FULL PLAYLIST</H4>
                 </VideoContent>
             </SearchView>
         </>
     )
 }
 
-export default Playlists;
+export default PlaylistComponent;
 
 const SearchView = styled.div`
     width : 100%;

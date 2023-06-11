@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Category } from '../utilis/Category';
-import HeroSection from '../Components/HeroSection';
 import SideBar from '../Components/SideBar';
+import HomeVideosSection from '../Components/HomeComponents/HomeVideosSection';
+import CategoryBy from '../Components/HomeComponents/HomeCategory';
 
 const Home = () => {
 
     const [selectedCategory,setSelectedCategroy] = useState<string>("All")
+    const [active,setActive] = useState<string>("All")
+    
+    const handleCategory = (category:string)=>{
+        setSelectedCategroy(category)
+        setActive(category)
+    }
 
     return (
         <>            
@@ -16,12 +23,12 @@ const Home = () => {
                 Category.map((catName,i)=>{
                     const {name} = catName;
                     return (
-                        <H3 key={i}  onClick={()=>setSelectedCategroy(name)}>{name}</H3>
+                        <CategoryBy key={i} categoryName={name} getCategory={handleCategory} active={active} />
                     )
                 })
             }
             </CategorySection>
-            <HeroSection categoryName={selectedCategory} />            
+            <HomeVideosSection categoryName={selectedCategory} />            
         </>
     )
 }
@@ -37,12 +44,4 @@ const CategorySection = styled.div`
     padding : 10px;
     background-color : #FFF;
     width : 100%;
-`
-
-const H3 = styled.h3`
-    padding : 5px 15px;
-    font-size : 15px;
-    border-radius : 5px;
-    background-color : ${({theme})=> theme.colors.bg };
-    cursor : pointer;
 `

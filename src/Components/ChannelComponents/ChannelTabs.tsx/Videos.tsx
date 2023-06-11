@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { fetchVideo } from "../../APIs/fetchFromAPI"
-import { IVideosProps } from "../../Interfaces"
-import SmallCardSkeletonComponent from "../SkeltonComponents/SmallCardSkeltonComponent"
+import { fetchVideo } from "../../../APIs/fetchFromAPI"
+import { IVideosProps } from "../../../Interfaces"
+import SmallCardSkeletonComponent from "../../SkeltonComponents/SmallCardSkeltonComponent"
 import styled from "styled-components"
+import { VideoByOrder } from "../VideoByOrder"
 
 export const ChannelVideos = ()=>{
 
@@ -11,10 +12,11 @@ export const ChannelVideos = ()=>{
     const [videos,setVideos] = useState<IVideosProps[]>([]);
     const [isloading,setLoading] = useState(true)
     const [order,setOrder] = useState<string>("date")
+    const [active,setActive] = useState<string>("relevance")
 
     const getVideos = useCallback( async ()=>{
         try {
-            const res = await fetchVideo("","video",channelId as string,order)
+            const res = await fetchVideo("","video",channelId as string,order,12)
             setVideos(res)
         }
         catch(error) {
@@ -31,15 +33,24 @@ export const ChannelVideos = ()=>{
 
     const handleOrder = (orderType:any)=>{
         setOrder(orderType)
-        // setLoading(true)
+        setActive(orderType)
+        setLoading(true)
     }
 
     return (
         <>
-            <SortVideoContainer>
-                <Button onClick={()=>handleOrder("date")}>Latest</Button>
-                <Button onClick={()=>handleOrder("viewCount")}>Popular</Button>
-            </SortVideoContainer>
+            <SortButtons>
+                {
+                    VideoByOrder.map((order)=>{
+                        return (
+                            <Button 
+                                key={order.id} 
+                                onClick={()=>handleOrder(order.orderby)} 
+                                className={active === order.orderby?"btn-active":""}>{order.heading}</Button>
+                        )
+                    })
+                }
+            </SortButtons>
             
             <VideoContainer>
                 <SmallCardSkeletonComponent
@@ -58,7 +69,7 @@ const VideoContainer = styled.div`
     gap : 20px;
 `
 
-const SortVideoContainer = styled.div`
+const SortButtons = styled.div`
     display : flex;
     gap : 20px;
     margin : 20px 80px;

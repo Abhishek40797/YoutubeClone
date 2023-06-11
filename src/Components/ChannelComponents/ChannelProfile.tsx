@@ -1,27 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
+import ChannelSubscibe from "./ChannelSubscibe";
 
 interface IChannel {
-    width : string,
-    height : string,
     url : string,
     channeltitle : string,
-    channelId : string,
+    channelId? : string,
+    description? : string
 }
 
-const ChannelProfile = ({width,height,url,channeltitle,channelId}:IChannel)=>{
+const ChannelProfile = ({url,channeltitle,channelId,description}:IChannel)=>{
     const navigate = useNavigate()
     return (
         <>
-            <SubContainer onClick={()=>navigate(`/channel/${channelId}`)}>
+            <SubContainer onClick={()=>channelId?navigate(`/channel/${channelId}`):""}>
                 <ChannelDetail>
-                    <Img src={url} width={width} alt='' height={height} />
+                    <Img src={url} />
                     <div>
                         <H3>{channeltitle}</H3>
-                        <P>@{channeltitle} • {Math.floor(Math.random()*50)}M subscibers</P>
+                        <P>@{channeltitle}  {Math.floor(Math.random()*50)}M subscibers {Math.floor(Math.random()*200)} videos</P>
+                        {description?.length ?  !channelId&&<Des onClick={()=>navigate(`about`)}>{description?.slice(0,45)}, <I className='fas fa-angle-right'></I></Des>:""}
                     </div>
                 </ChannelDetail>
-                <Subscribe>Subscribe</Subscribe>
+                <ChannelSubscibe />
             </SubContainer>
         </>
     )
@@ -45,9 +46,9 @@ const ChannelDetail = styled.div`
     align-items : center;
 `
 
-const Img = styled.img<{width:string,height:string}>`
-    width : ${({width})=>width};
-    height : ${({height})=>height};
+const Img = styled.img`
+    width : 110px;
+    height : 110px ;
     border-radius : 50%;
 `
 
@@ -56,16 +57,14 @@ const H3 = styled.h3`
     padding-bottom : 5px;
 `
 const P = styled.p`
-    font-size : 12px;
+    font-size : 15px;
 `
 
-const Subscribe = styled.button`
-    border : none;
-    outline : none;
-    color : #FFF;
-    background-color : #000;
-    padding : 10px 20px;
-    font-weight : 700;
-    border-radius : 20px;
-    cursor : pointer;
+const Des = styled.p`
+    padding-block : 10px;
+    cursor: pointer;    
+`
+const I = styled.i`
+    padding-left : 10px;
+    font-size : 20px;
 `

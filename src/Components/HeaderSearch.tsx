@@ -6,12 +6,14 @@ export const SearchHeader = ()=> {
     const navigate = useNavigate()
     const [searchItem,setSearchItem] = useState<string>("");
 
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-        setSearchItem(e.target.value)
+    const handleKeyPress = (e:React.KeyboardEvent)=>{
+        if(e.key==="Enter") {
+            handleSubmit()
+        }
     }
 
     const handleSubmit = ()=>{
-        if(searchItem?.length > 0) {
+        if(searchItem.length>0) {
             navigate(`/search/${searchItem}`)
         }
     }
@@ -19,8 +21,16 @@ export const SearchHeader = ()=> {
     return (
         <>
             <SearchSection>
-                <Input placeholder="Search" value={searchItem} onChange={(e)=>handleChange(e)} /> 
-                <I className="fa-solid fa-magnifying-glass" onClick={handleSubmit}></I>
+                <Form onSubmit={(e)=>e.preventDefault()}>
+                    <Input  
+                        placeholder="Search" 
+                        value={searchItem} 
+                        spellCheck="false"
+                        onChange={(e)=>setSearchItem(e.target.value)} 
+                        onKeyUp={handleKeyPress}
+                    /> 
+                    <I className="fa-solid fa-magnifying-glass" onClick={handleSubmit}></I>
+                </Form>
             </SearchSection>
         </>
     )
@@ -28,7 +38,6 @@ export const SearchHeader = ()=> {
 
 const SearchSection = styled.div`
     width : 40%;
-    display : flex;
     align-items : center;
     @media (max-width:${({theme})=>theme.responsive.mobile}) {
         width : 70%;
@@ -59,4 +68,8 @@ const I = styled.i`
     place-items : center;
     background-color : #F8F8F8;
     cursor : pointer;
+`
+
+const Form = styled.form`
+    display : flex;
 `

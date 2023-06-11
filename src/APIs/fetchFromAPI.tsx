@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "AIzaSyDzggVpTJeDhyk42u3YQJQGHByl6OPntwk";
+const API_KEY = "AIzaSyBrPqUoL6goYZSwkKI5nGu4Wnknkpkm18g";
 const BASE_URL = "https://www.googleapis.com/youtube/v3"
 
 enum Parts {
@@ -8,44 +8,73 @@ enum Parts {
     id = "id"
 }
 
-export const fetchVideo =  async(category:string,type:string,channelId:string,ordertype:string)=>{
-    const { data } = await axios.get(`${BASE_URL}/search`,{
+export const fetchVideo =  async(
+    category?:string,
+    type?:string,
+    channelId?:string,
+    ordertype?:string,
+    maxResults?:number,
+    evtype?:string,)=> {
+        const { data } = await axios.get(`${BASE_URL}/search`,{
+            params : {
+                part : Parts.snippet,
+                q : category,
+                type : type,
+                key : API_KEY,
+                channelId : channelId,
+                order : ordertype,
+                eventType : evtype,
+                maxResults : maxResults
+            }
+        })
+        return data.items
+}
+
+export const fetchChannel =  async(channelId:string)=>{
+    const { data } = await axios.get(`${BASE_URL}/channels`,{
         params : {
             part : Parts.snippet,
-            q : category,
-            type : type,
             key : API_KEY,
-            channelId : channelId,
-            order : ordertype,
-            // eventType : "live",
-            maxResults : 9
+            id : channelId,
         }
     })
-    return data.items
+    return data.items[0]
+}
+
+export const fetchPlaylist =  async(list:string)=>{
+    const { data } = await axios.get(`${BASE_URL}/playlistItems`,{
+        params : {
+            part : Parts.snippet,
+            key : API_KEY,
+            playlistId : list
+        }
+    })
+    return data.items;
 }
 
 
-export const fetchWatchVideo = async(url:string,videoId:any)=>{
+
+export const fetchWatchContainerData = async(url:string,videoId:string,resultShow?:number)=>{
     const res = await axios.get(`${BASE_URL}/${url}`,{
         params : {
             part : Parts.snippet,
             relatedToVideoId : videoId,
             id : videoId,
             key : API_KEY,
-            maxResults : 33,
-            type:"video"
+            maxResults : resultShow,
+            type:"video",
         }
     })
     return res.data.items
 }
 
-export const fetchComments = async (videoId:string)=>{
+export const fetchComments = async (videoId:string,resultShow:number)=>{
     const res = await axios.get(`${BASE_URL}/commentThreads`,{
         params : {
             part : Parts.snippet,
             videoId : videoId,
             key : API_KEY,
-            maxResults : 50,
+            maxResults : resultShow,
         }
     })
     return res.data.items

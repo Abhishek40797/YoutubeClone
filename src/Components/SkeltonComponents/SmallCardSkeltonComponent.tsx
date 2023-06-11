@@ -1,6 +1,8 @@
+import styled from "styled-components";
 import { IVideosProps } from "../../Interfaces";
 import SmallCardSkeleton from "../CardSkeleton";
-import HomeVideos from "../HeroVideos";
+import VideoCardDetails from "../VideoCardDetails";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
     isLoading : boolean,
@@ -8,6 +10,7 @@ interface IProps {
 }
 
 const SmallCardSkeletonComponent = ({isLoading,videos}:IProps)=>{
+    const navigate  = useNavigate()
     return (
         <>
             {
@@ -24,17 +27,41 @@ const SmallCardSkeletonComponent = ({isLoading,videos}:IProps)=>{
                     videos.map((video,i)=>{
                         const {id,snippet} = video;
                         return (
-                            <HomeVideos 
-                                key={i}
-                                videoId={id.videoId}
-                                thumbnail={snippet.thumbnails.medium.url}   
-                                title={snippet.title}  
-                                channalName={snippet.channelTitle}                               
-                            />
+                            <VideoCard key={i}>
+                                <Img src={snippet.thumbnails.medium.url} alt=''  onClick={()=>navigate(`/watch/${id.videoId}`)} />
+                                <VideoCardDetails
+                                    videoId={id.videoId}
+                                    channelId={snippet.channelId}
+                                    channelTitle={snippet.channelTitle}
+                                    title={snippet.title}
+                                    publishedAt={snippet.publishedAt}
+                                />
+                            </VideoCard>
                         )
                     })
             }
         </>
     )
 }
+
 export default SmallCardSkeletonComponent;
+
+
+const VideoCard = styled.div`
+    width : 30%;
+    display : flex;
+    flex-direction : column;
+    gap : 5px;
+    cursor : pointer;
+`
+
+const Img = styled.img`
+    width : 100%;
+    object-fit : cover;
+    height : 200px;
+    border-radius : 10px;
+    transition : .5s;
+    &:hover {
+        border-radius : 0;
+    }
+`
