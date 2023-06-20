@@ -1,16 +1,27 @@
-export const UploadDate = [
+interface Itab {
+    id: number;
+    tab: string;
+}
+
+export const UploadDate: Itab[] = [
     {
-        heading : "Upload Date",
-        filter1 : "Last hour",
-        filter2 : "Today",
-        filter3 : "This week",
-        filter4 : "This month",
-        filter5 : "This year",
-        filter6 : "",
-        filter7 : "",
-        filter8 : "",
-        filter9 : "",
-        filter10 : "",
-        filter11 : "",
-    }
-]
+      id: 1,
+      tab: "Last hour",
+    },
+    {
+      id: 2,
+      tab: "Today",
+    },
+    {
+      id: 3,
+      tab: "This week",
+    },
+    {
+      id: 4,
+      tab: "This month",
+    },
+    {
+      id: 5,
+      tab: "This year",
+    },
+  ];

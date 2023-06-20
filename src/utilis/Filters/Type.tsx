@@ -1,16 +1,23 @@
-export const Type = [
+export const Type: Itab[] = [
     {
-        heading : "Type",
-        filter1 : "Video",
-        filter2 : "Channel",
-        filter3 : "Playlist",
-        filter4 : "",
-        filter5 : "",
-        filter6 : "",
-        filter7 : "",
-        filter8 : "",
-        filter9 : "",
-        filter10 : "",
-        filter11 : "",
-    }
-]
+      id: 1,
+      tab: "video",
+    },
+    {
+      id: 2,
+      tab: "channel",
+    },
+    {
+      id: 3,
+      tab: "playlist",
+    },
+    {
+      id: 4,
+      tab: "movie",
+    },
+  ];
+
+  interface Itab {
+    id: number;
+    tab: string;
+  }

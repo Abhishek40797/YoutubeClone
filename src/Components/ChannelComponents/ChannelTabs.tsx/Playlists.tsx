@@ -12,6 +12,7 @@ export const ChannelPlaylist = ()=>{
         try {
             const res = await fetchVideo("","playlist",channelId)
             setPlaylists(res)
+            console.log(res)
         }
         catch(error) {
             console.log(error)

@@ -5,39 +5,42 @@ import { fetchWatchContainerData } from '../APIs/fetchFromAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Image } from '../utilis/components'
 import moment from 'moment';
+import { useGSelector } from '../redux-saga/store';
 
 interface IProps {
-    resultShow : number
+    query : string
 }
 
-const RelatedVideos = ({resultShow}:IProps) => {
+const RelatedVideos = ({query}:IProps) => {
 
     const {videoId} = useParams()
-    const navigate = useNavigate()
-    const [videos,setVideos] = useState<IVideosProps[]>([])
+    const {videos} = useGSelector((state) => state.homeVideoData)
+    
+    // const navigate = useNavigate()
+    // const [videos,setVideos] = useState<IVideosProps[]>([])
 
-    const getVideoDetails = useCallback( async ()=>{
-        try {
-            const res = await fetchWatchContainerData(`search`,videoId as string,resultShow)
-            setVideos(res)
-        }
-        catch(err) {
-            console.log(err)
-        }
-    },[videoId,resultShow])
+    // const getVideoDetails = useCallback( async ()=>{
+    //     try {
+    //         const res = await fetchWatchContainerData(videoId as string)
+    //         setVideos(res)
+    //     }
+    //     catch(err) {
+    //         console.log(err)
+    //     }
+    // },[videoId])
 
-    useEffect(()=>{
-        getVideoDetails()
-    },[getVideoDetails])
+    // useEffect(()=>{
+    //     getVideoDetails()
+    // },[getVideoDetails])
 
-    const handlePlayVideo = (id:any)=>{
-        navigate(`/watch/${id.videoId}`)
-        window.scrollTo(0,0)
-    }
+    // const handlePlayVideo = (id:any)=>{
+    //     navigate(`/watch/${id.videoId}`)
+    //     window.scrollTo(0,0)
+    // }
 
     return (
         <>
-            <Container>
+            {/* <Container>
                 {
                     videos.map((video,i)=>{
                         const {id,snippet} = video
@@ -53,7 +56,7 @@ const RelatedVideos = ({resultShow}:IProps) => {
                         )
                     })
                 }
-            </Container>
+            </Container> */}
         </>
     );
 }

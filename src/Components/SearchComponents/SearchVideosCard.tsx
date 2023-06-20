@@ -2,28 +2,28 @@ import moment from 'moment';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { IVideosProps } from '../../Interfaces';
 
 interface IVideos {
-    videoId : string,
-    thumbnail : any,
-    title : string,
-    channalName : string,
-    published : string,
-    channelid : string
+    videoData : IVideosProps
 }
 
 const SearchVideoCards = (props:IVideos) => {
-    const {videoId,thumbnail,title,channalName,published,channelid} = props
+    const {id,snippet} = props.videoData
     const navigate  = useNavigate()
+
+    const handleClick = (vid:string)=>{
+        navigate(`/watch/${vid}`)
+    }
 
     return (
         <>
             <SearchVideoCard>
-                <Img src={thumbnail} alt='' onClick={()=>navigate(`/watch/${videoId}`)} />
+                <Img src={snippet.thumbnails.high.url} alt='' onClick={()=>handleClick(id.videoId)} />
                 <VideoContent>
-                    <H3 onClick={()=>navigate(`/watch/${videoId}`)}>{title}</H3>
-                    <P>76K views . <span>{moment(published).fromNow()}</span></P>
-                    <H5 onClick={()=>navigate(`/channel/${channelid}`)}>Channel Name : {channalName}</H5>
+                    <H3 onClick={()=>handleClick(id.videoId)}>{snippet.title}</H3>
+                    <P>76K views . <span>{moment(snippet.publishedAt).fromNow()}</span></P>
+                    <H5 onClick={()=>navigate(`/channel/${snippet.channelId}`)}>Channel Name : {snippet.channelTitle}</H5>
                 </VideoContent>
             </SearchVideoCard>
         </>

@@ -10,6 +10,7 @@ export interface IVideosProps {
         playlistId : string
     }
     kind : string,
+    nextPageToken : string,
     snippet : {
         channelId : string,
         channelTitle : string,

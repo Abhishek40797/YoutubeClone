@@ -1,42 +1,37 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { HeaderIcon } from './HeaderButton';
-import { fetchComments } from '../APIs/fetchFromAPI';
-import { ICommentsProps } from '../Interfaces';
-import { useParams } from 'react-router-dom';
 import ChannelImage from './ChannelComponents/ChannelImage';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { fetchCommentsStart } from '../redux-saga/actions/CommentsActionTypes';
+import { useGSelector } from '../redux-saga/store';
+import { useParams } from 'react-router-dom';
 
-interface IProps {
-    resultShow : number
-}
-
-const UserComments = ({resultShow}:IProps) => {
-    const {videoId} = useParams()
-    const [comments,setComments] =  useState<ICommentsProps[]>([])
-    
-    const getComments = useCallback( async ()=>{
-        try {
-            const res = await fetchComments(videoId as string,resultShow)
-            setComments(res)
-        }
-        catch(err) {
-            console.log(err)
-        }
-    },[videoId,resultShow])
+const UserComments = () => {
+    const { videoId } = useParams();
+    const dispatch = useDispatch()    
+    const {commentItems} = useGSelector((state)=>state.commentData)
+    // const res = videoId && commentItems.get(videoId)?.items
+    console.log(commentItems)
 
     useEffect(()=>{
-        getComments()
-    },[getComments])
+        if(videoId&&commentItems.has(videoId)) {
+            return;
+        }
+        if(videoId) {
+            dispatch(fetchCommentsStart({videoId:videoId}))
+        }
+    },[dispatch,videoId,commentItems])
 
     return (
         <>
             <CommentSection>
                 <P>Comments</P>
                 {
-                    comments.map((comment,i)=>{
-                        const {snippet} = comment
-                        const {textDisplay,authorDisplayName,authorProfileImageUrl,authorChannelId,updatedAt} = snippet.topLevelComment.snippet
+                    videoId &&  commentItems.get(videoId)?.items.map((item,i)=>{
+                        const {snippet} = item
+                        const {textDisplay,authorDisplayName,authorProfileImageUrl,updatedAt} = snippet.topLevelComment.snippet
                         return (
                             <Comments key={i}>
                                 <ChannelImage url={authorProfileImageUrl} />
@@ -76,10 +71,6 @@ const Comments = styled.div`
     align-items : flex-start;
 `
 
-const Img = styled.img`
-    width : 5%;
-    border-radius : 50%;
-`
 
 const CommentInfo = styled.div`
 

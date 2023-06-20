@@ -22,7 +22,7 @@ function App() {
           <Header/>
             <Routes>
               <Route path='/' element={<Home/>} />
-              <Route path='/search/:categoryName' element={<SearchVideos />} />
+              <Route path='/search/:query' element={<SearchVideos />} />
               <Route path='/watch/:videoId' element={<WatchVideos/>} />
               <Route path='/playlist/:list' element={<Playlists/>} />
               <Route path='/channel/:channelId' element={<ChannelDetails/>}>

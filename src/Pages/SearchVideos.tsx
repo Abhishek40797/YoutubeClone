@@ -1,57 +1,44 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { IVideosProps } from '../Interfaces';
-import { fetchVideo } from '../APIs/fetchFromAPI';
 import { useParams } from 'react-router-dom';
 import SideBar from '../Components/SideBar';
-import Filters from '../Components/Filters';
-import { UploadDate } from '../utilis/Filters/UploadDate';
-import { Type } from '../utilis/Filters/Type';
-import { Duration } from '../utilis/Filters/Duration';
-import { Features } from '../utilis/Filters/Features';
-import { SortBy } from '../utilis/Filters/SortBy';
-import ChannelProfile from '../Components/ChannelComponents/ChannelProfile';
-import { PlaylistComponent } from '../Components/Playlists';
 import SearchVideoCards from '../Components/SearchComponents/SearchVideosCard';
+import FilterCard from '../Components/FilterCard';
+import { useDispatch } from 'react-redux';
+import { useGSelector } from '../redux-saga/store';
+import { getYouTubeVideos, setCategory } from '../redux-saga/actions/HomeActionTypes';
 
+type VideoType = "video" | "channel" | "";
+type Duration = "any" | "long" | "medium" | "";
+type UploadDate = "Today" | "This Week" | "";
+
+export interface SearchParams {
+    videoType: VideoType;
+    duration: Duration;
+    uploadDate: UploadDate;
+}
 
 const SearchVideos = () => {
-    const {categoryName} = useParams()
-
-    const [videos,setVideos] = useState<IVideosProps[]>([]);
+    const {query} = useParams<{query : any}>()
     const [filterVisibility,setFilterVisibility] = useState<boolean>(false)
-    const [type,setType] = useState<string>("")
-    const [resultShow,setResultShow] = useState(9)
-
-    const getVideos = useCallback( async ()=>{
-        try {
-            const res = await fetchVideo(categoryName as string,type,"","viewCount",resultShow)
-            setVideos(res)
-        }
-        catch(error) {
-            console.log(error)
-        }
-    },[categoryName,type,resultShow])
+    const [filterValues, setFilterValues] = useState<SearchParams>({
+        uploadDate: "",
+        duration: "",
+        videoType: "",
+    });
+    const dispatch = useDispatch();
+    const {videos} = useGSelector((state) => state.homeVideoData)
 
     useEffect(()=>{
-        getVideos()
-    },[getVideos])
-
-    const handleScroll = ()=>{
-        if(window.innerHeight + document.documentElement.scrollTop +1 >= document.documentElement.scrollHeight) {
-            setResultShow(prev=>prev+6)
+        if(videos.has(query)) {
+            return;
         }
-    }
+        dispatch(getYouTubeVideos({q:query}))
+    },[dispatch,query,videos])
 
     useEffect(()=>{
-        window.addEventListener("scroll",handleScroll)
-        return window.addEventListener("scroll",handleScroll)
-    },[resultShow])
-
-    const handleFilter = (filtertype:string)=>{
-        setType(filtertype)
-        setFilterVisibility(false)
-    }
+        dispatch(setCategory(query))
+    },[dispatch,query])
 
 
     return (
@@ -62,53 +49,23 @@ const SearchVideos = () => {
                     <H4 onClick={()=>setFilterVisibility(!filterVisibility)}><I className="fa-solid fa-filter"></I>Filters</H4>
 
                     <Visibility display={`${filterVisibility ? "block" : "none"}`}>
-                        <FilterSubContainer>
-                            <Filters filters={UploadDate} handleFilter={handleFilter}/>
-                            <Filters filters={Type} handleFilter={handleFilter} />
-                            <Filters filters={Duration} handleFilter={handleFilter} />
-                            <Filters filters={Features} handleFilter={handleFilter} />
-                            <Filters filters={SortBy} handleFilter={handleFilter} />
-                        </FilterSubContainer>
+                        <FilterCard
+                            filterValues={filterValues}
+                            onFilterChange={(newValues) => {
+                                setFilterValues(newValues);
+                            }}
+                        />
                     </Visibility>
                     
                 </FilterContainer>
 
                 {
-                    videos.map((video,i)=>{
-                        const {id,snippet} = video;
+                    videos.get(query)?.items.map((video,i)=>{
                         return (
-                            // type === "Channel" ? 
-                            //     <ChannelProfile 
-                            //         key={i}
-                            //         url = {snippet.thumbnails.default.url}
-                            //         channeltitle = {snippet.channelTitle}
-                            //         channelId = {snippet.channelId}
-                            //     />
-                                
-                            //     :
-
-                            //     type === "Playlist" ?
-                            //         <PlaylistComponent
-                            //             key={i}
-                            //             playlistId ={id.playlistId}
-                            //             url ={snippet.thumbnails.medium.url}
-                            //             title={snippet.title}
-                            //             channaltitle = {snippet.channelTitle}
-                            //             channelId = {snippet.channelId}
-                            //             description = {snippet.description}
-                            //         /> :
-                                    <SearchVideoCards
-                                        key={i}
-                                        videoId={id.videoId}
-                                        thumbnail = {snippet.thumbnails.medium.url}
-                                        title={snippet.title}  
-                                        channalName={snippet.channelTitle}
-                                        published={snippet.publishedAt}
-                                        channelid={snippet.channelId}  
-                                    />
+                            <SearchVideoCards key={i} videoData={video}       />
                         )                 
-                })
-            }
+                    })
+                }
 
             </Container>
         </>
@@ -147,10 +104,4 @@ const I = styled.i`
 
 const Visibility = styled.div<{display:string}>`
     display : ${({display})=>display};
-`
-
-const FilterSubContainer = styled.div`
-    margin: 10px 0 30px 0;
-    display : flex;
-    justify-content : space-between;
 `

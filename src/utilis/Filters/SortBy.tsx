@@ -1,16 +1,23 @@
-export const SortBy = [
+interface Itab {
+    id: number;
+    tab: string;
+}
+
+export const SortBy: Itab[] = [
     {
-        heading : "Sort By",
-        filter1 : "Relevance",
-        filter2 : "Upload Date",
-        filter3 : "View Count",
-        filter4 : "Rating",
-        filter5 : "",
-        filter6 : "",
-        filter7 : "",
-        filter8 : "",
-        filter9 : "",
-        filter10 : "",
-        filter11 : "",
-    }
-]
+      id: 1,
+      tab: "relevance",
+    },
+    {
+      id: 2,
+      tab: "date",
+    },
+    {
+      id: 3,
+      tab: "viewCount",
+    },
+    {
+      id: 4,
+      tab: "rating",
+    },
+  ];

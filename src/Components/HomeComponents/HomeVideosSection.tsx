@@ -1,51 +1,38 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import { ICategroy, IVideosProps } from '../../Interfaces';
-import { fetchVideo } from '../../APIs/fetchFromAPI';
-import SmallCardSkeletonComponent from '../SkeltonComponents/SmallCardSkeltonComponent';
+import { ICategroy } from '../../Interfaces';
+import { useDispatch } from "react-redux";
+import { getYouTubeVideos, setCategory } from '../../redux-saga/actions/HomeActionTypes';
+import { useGSelector } from '../../redux-saga/store';
+import HomeVideoCards from './HomeVideoCards';
 
 const HomeVideosSection = ({categoryName}:ICategroy) => { 
-    const [videos,setVideos] = useState<IVideosProps[]>([]);
-    const [isloading,setLoading] = useState(true)
-    const [resultShow,setResultShow] = useState(9)
-
-    const getVideos = useCallback(async ()=>{
-        try {
-            const res = await fetchVideo(categoryName,"","","date",resultShow)
-            setVideos(res)
-        }
-        catch(error) {
-            console.log(error)
-        }
-    },[categoryName,resultShow])
-
-    useEffect(()=>{        
-       setTimeout(()=>{
-        getVideos()
-        setLoading(false)
-       },1000)
-    },[getVideos])
-
-    const handleScroll = ()=>{
-        if(window.innerHeight + document.documentElement.scrollTop +1 >= document.documentElement.scrollHeight) {
-            setResultShow(prev=>prev+6)
-        }
-    }
+    const dispatch = useDispatch()
+    const {videos} = useGSelector((state) => state.homeVideoData)
+    // const pageToken = videos.get(categoryName)?.nextPageToken
 
     useEffect(()=>{
-        window.addEventListener("scroll",handleScroll)
-        return window.addEventListener("scroll",handleScroll)
-    },[resultShow])
+        if(videos.has(categoryName)) {
+            return;
+        }
+        dispatch(getYouTubeVideos({q:categoryName}))
+    },[dispatch,categoryName,videos])
 
+    useEffect(()=>{
+        dispatch(setCategory(categoryName))
+    },[dispatch,categoryName])
 
     return (
         <>
             <Container>
                 <VideoContainer>
-                    <SmallCardSkeletonComponent
-                        isLoading = {isloading}
-                        videos={videos}
-                    />  
+                {
+                    videos.get(categoryName)?.items.map((video,i)=>{
+                        return (
+                            <HomeVideoCards videoData={video} key={i} />
+                        )
+                    })
+                }  
                 </VideoContainer>
             </Container>
         </>

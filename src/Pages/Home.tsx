@@ -33,6 +33,8 @@ const Home = () => {
     )
 }
 
+
+
 export default Home;
 
 const CategorySection = styled.div`

@@ -1,74 +1,52 @@
-import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { fetchWatchContainerData } from "../APIs/fetchFromAPI";
-import RelatedVideos from "../Components/RelatedVideos";
-import { IWatchProps } from "../Interfaces";
-import UserComments from "../Components/Comments";
 import ChannelImage from "../Components/ChannelComponents/ChannelImage";
 import ChannalName from "../Components/ChannelComponents/ChannalName";
 import ChannelSubscibe from "../Components/ChannelComponents/ChannelSubscibe";
+import { useGSelector } from "../redux-saga/store";
+import UserComments from "../Components/Comments";
+import RelatedVideos from "../Components/RelatedVideos";
 
 const WatchVideos = ()=> {
     const {videoId} = useParams()
-    const [video,setVideo] = useState<IWatchProps[]>([])
-    const [videolink,setVideolink] = useState("")
-    const [resultShow,setResultShow] = useState<number>(10)
+    const {videos,q} = useGSelector((state) => state.homeVideoData)
+    const res =  videos.get(q)?.items.find((video) =>video.id.videoId === videoId);
 
-    const getVideoDetails = useCallback(async()=>{
-        try {
-            const res = await fetchWatchContainerData("videos",videoId as string,resultShow)
-            setVideo(res);
-        }
-        catch(err) {
-            console.log(err)
-        }
-    },[videoId,resultShow])
+    // const handleScroll = ()=>{
+    //     if(window.innerHeight + document.documentElement.scrollTop +1 >= document.documentElement.scrollHeight) {
+    //         setResultShow(prev=>prev+6)
+    //     }
+    // }
 
-    useEffect(()=>{
-        if(video.length) {
-            setVideolink(`https://www.youtube.com/embed/${video[0].id}?&autoplay=1`)
-        }   
-    },[video])
+    // useEffect(()=>{
+    //     window.addEventListener("scroll",handleScroll)
+    //     return window.addEventListener("scroll",handleScroll)
+    // },[resultShow])
 
-    useEffect(()=>{
-        getVideoDetails()
-    },[getVideoDetails])
-
-    const handleScroll = ()=>{
-        if(window.innerHeight + document.documentElement.scrollTop +1 >= document.documentElement.scrollHeight) {
-            setResultShow(prev=>prev+6)
-        }
-    }
-
-    useEffect(()=>{
-        window.addEventListener("scroll",handleScroll)
-        return window.addEventListener("scroll",handleScroll)
-    },[resultShow])
 
 
     return (
         <>
             <Container>
                 <WatchSection>
-                    <IFrame src={videolink} title="YouTube video player"></IFrame>
-                    <Title>{video.length? video[0].snippet.title : ""}</Title>
+                    <IFrame src={`https://www.youtube.com/embed/${res?.id.videoId}?autoplay=1`} title="YouTube video player" allow="autoplay"></IFrame>
+                    <Title>{res?.snippet.title}</Title>
 
                     <ChannelNameSection>
                         <ChannelNameSectionLeft>
-                            <ChannelImage url="" channelId={video.length? video[0].snippet.channelId :""} />
-                            <div>
-                                <ChannalName channalName={video.length? video[0].snippet.channelTitle :""} />
-                                <P>{Math.floor(Math.random()*1000)}M subscibers</P>
-                            </div>
-                            <ChannelSubscibe />
-                        </ChannelNameSectionLeft>
+                            <ChannelImage url="" channelId={res?.snippet.channelId} />
+                                <div>
+                                    <ChannalName channalName={res?.snippet.channelTitle as string} />
+                                    <P>{Math.floor(Math.random()*1000)}M subscibers</P>
+                                </div>
+                                <ChannelSubscibe />
+                            </ChannelNameSectionLeft>
                     </ChannelNameSection>
 
-                    <UserComments resultShow={resultShow}/>                    
+                    <UserComments/>                    
                 </WatchSection>
-                
-                <RelatedVideos resultShow={resultShow} />
+                    
+                <RelatedVideos query={q} />
 
             </Container>
         </>
